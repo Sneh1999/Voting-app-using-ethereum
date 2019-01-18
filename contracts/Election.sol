@@ -9,6 +9,7 @@ contract Election {
     }
     //Store Candidates 
     //Fetch Candidate
+    mapping(address =>bool) public voters;
     mapping(uint =>Candidate) public candidates;
     uint public candidatesCount;
     //Constructor
@@ -21,4 +22,14 @@ contract Election {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount,_name,0);
     }
+    function vote(uint _candidateId) public {
+         require(!voters[msg.sender]);
+
+        // require a valid candidate
+        require(_candidateId > 0 && _candidateId <= candidatesCount);
+        voters[msg.sender] = true;
+        
+        candidates[_candidateId].voteCount++; 
+    }
+
 }
