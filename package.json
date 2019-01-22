@@ -8,11 +8,11 @@
   },
   "scripts": {
     "dev": "lite-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "gh-pages -d ./src"
   },
   "author": "",
   "license": "ISC",
-  "homepage":"https://Sneh1999.github.io/Voting-Dapp"
+  "homepage": "https://Sneh1999.github.io/S-Dapp-1",
   "devDependencies": {
     "gh-pages": "^2.0.1",
     "lite-server": "^2.3.0"
