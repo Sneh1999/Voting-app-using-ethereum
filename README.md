@@ -1,6 +1,6 @@
 # S-Dapp
 
-This is a voting app .There are teo candidates and each can be voted upon using an account as a user.One account cant vote twice .The accounts are the accounts which are available on local server on ganache 
+This is a voting app .There are two candidates and each can be voted upon using an account as a voter.One account cant vote twice .The accounts are the accounts which are available on local server on ganache 
 
 ##Building Locally 
 ```bash 
