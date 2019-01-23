@@ -1,5 +1,6 @@
-import {election} from './Election.json'
-App = {
+const election = require('./Election.json')
+
+  App = {
   web3Provider: null,
   contracts: {},
   account: '0x0',
