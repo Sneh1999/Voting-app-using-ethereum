@@ -1,4 +1,4 @@
-const Election;
+const Election = null;
 App = {
   web3Provider: null,
   contracts: {},
