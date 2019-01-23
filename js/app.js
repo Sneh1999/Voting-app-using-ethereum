@@ -117,7 +117,7 @@ App = {
     //   // Instantiate a new truffle contract from the artifact
       App.contracts.Election = web3.eth.contract(abi).at(contract_address);
     //   // Connect provider to interact with contract
-    App.contracts.Election.setProvider(App.web3Provider);
+    // App.contracts.Election.setProvider(App.web3Provider);
 
       return App.render();
     // });
