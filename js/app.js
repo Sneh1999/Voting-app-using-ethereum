@@ -1,4 +1,4 @@
-
+const election = require('./Election.json')
 
   App = {
   web3Provider: null,
@@ -24,7 +24,7 @@
     return App.initContract();
   },
 
-  initContract: async() => {
+  initContract:  () => {
 
     var contract_address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
   
@@ -2447,7 +2447,7 @@
       const trufflecontract = TruffleContract(election);
     //   // Connect provider to interact with contract
       trufflecontract.setProvider(App.web3Provider);
-      App.contracts.Election = await trufflecontract.at(contract_address)
+      App.contracts.Election = await trufflecontract.at(address)
 
       return App.render();
     // });
