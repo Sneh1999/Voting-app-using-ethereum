@@ -2447,7 +2447,7 @@
       const trufflecontract = TruffleContract(election);
     //   // Connect provider to interact with contract
       trufflecontract.setProvider(App.web3Provider);
-      App.contracts.Election = await trufflecontract.at(address)
+      App.contracts.Election = await trufflecontract.at(contract_address)
 
       return App.render();
     // });
