@@ -1,6 +1,6 @@
-const election = require('Election.json')
+const election = require('./Election.json')
 
-  App = {
+  module.exports = App = {
   web3Provider: null,
   contracts: {},
   account: '0x0',
