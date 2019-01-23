@@ -26,7 +26,7 @@ App = {
   initContract: function() {
 
     var contract_address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
-    var election = [{
+    var abi = [{
   "contractName": "Election",
   "abi": [
     {
