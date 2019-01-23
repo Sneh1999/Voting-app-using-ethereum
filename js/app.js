@@ -30,7 +30,7 @@ const election = require('./Election.json')
   
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
-    const trufflecontract =  = web3.eth.contract([
+    const trufflecontract   = web3.eth.contract([
     {
       "constant": true,
       "inputs": [],
