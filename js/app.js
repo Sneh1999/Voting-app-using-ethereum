@@ -26,7 +26,7 @@
 
   initContract: async () => {
 
-    var contract_address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
+    var address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
   
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
