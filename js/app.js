@@ -1,4 +1,4 @@
-const election = require('./Election.json')
+const election = require('Election.json')
 
   App = {
   web3Provider: null,
