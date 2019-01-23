@@ -24,7 +24,7 @@ const election = require('./Election.json')
     return App.initContract();
   },
 
-  initContract:  () => {
+  initContract: async () => {
 
     var contract_address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
   
