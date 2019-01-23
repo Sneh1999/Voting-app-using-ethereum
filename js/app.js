@@ -1,4 +1,4 @@
-
+import {election} from './Election.json'
 App = {
   web3Provider: null,
   contracts: {},
@@ -23,96 +23,16 @@ App = {
     return App.initContract();
   },
 
-  initContract: function() {
+  initContract: async() => {
 
-    var contract_address = '0x4a6babe0703fe3ffa3bdce50cd33061e83dc283d';
-    var abi = [
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_candidateId",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "candidates",
-		"outputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "voteCount",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "candidatesCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "voters",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
+    var contract_address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
+  
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
-      App.contracts.Election = web3.eth.contract(abi).at(contract_address);
+      const trufflecontract = TruffleContract(election);
     //   // Connect provider to interact with contract
-    // App.contracts.Election.setProvider(App.web3Provider);
+      trufflecontract.setProvider(App.web3Provider);
+      App.contracts.Election = await trufflecontract.at(address)
 
       return App.render();
     // });
@@ -135,7 +55,7 @@ App = {
     });
 
     // Load contract data
-    App.contracts.Election((instance) =>{
+    App.contracts.Election.deployed().then((instance) =>{
       electionInstance = instance;
       return electionInstance.candidatesCount();
     }).then((candidatesCount) =>{
@@ -164,7 +84,7 @@ castVote : function() {
   
    var candidateId = $('#candidatesSelect').val();
    console.log($('#candidatesSelect').val())
-    Election((instance) =>{
+    App.contracts.Election.deployed().then((instance) =>{
        instance.vote(candidateId, { from: App.account });
     }).then((result) =>{
       // Wait for votes to update
