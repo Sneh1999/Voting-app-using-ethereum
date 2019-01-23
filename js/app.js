@@ -7,7 +7,7 @@ App = {
     return App.initWeb3();
   },
 
-  initWeb3: function() {
+  initWeb3: async () {
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
       App.web3Provider = web3.currentProvider;
