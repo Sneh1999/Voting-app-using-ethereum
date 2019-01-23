@@ -14,7 +14,7 @@ App = {
       web3 = new Web3(web3.currentProvider);
      await ethereum.enable().then((account) => {
         const defaultAccount = account[0]
-        web3Provider.eth.defaultAccount = defaultAccount
+        App.web3Provider.eth.defaultAccount = defaultAccount
       })
     }
     else {
