@@ -1,4 +1,4 @@
-const Election = {};
+
 App = {
   web3Provider: null,
   contracts: {},
@@ -110,7 +110,7 @@ App = {
 ]
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
-      Election = web3.eth.contract(abi).at(contract_address);
+      App.contracts.Election = web3.eth.contract(abi).at(contract_address);
     //   // Connect provider to interact with contract
     // App.contracts.Election.setProvider(App.web3Provider);
 
@@ -135,7 +135,7 @@ App = {
     });
 
     // Load contract data
-    Election((instance) =>{
+    App.contracts.Election((instance) =>{
       electionInstance = instance;
       return electionInstance.candidatesCount();
     }).then((candidatesCount) =>{
