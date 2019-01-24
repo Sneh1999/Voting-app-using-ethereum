@@ -28,7 +28,7 @@ const Web3 = require('web3');
   initContract: async () => {
 
     var address = '0xD4C581E137A69709728309FB139095F6717C603f';
-  
+  web3.eth.defaultAccount = web3.eth.accounts[0];
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
     const trufflecontract   = await  web3.eth.contract(([
@@ -153,8 +153,8 @@ const Web3 = require('web3');
       // console.log(JSON.stringify(App.contracts.Election.candidates.call((1),(error,result)=>{console.log((result))})))
 
       for (var i = 1; i <= 2; i++) {
-        var promise = new Promise((resolve,reject) =>{
-            App.contracts.Election.candidates.call(i,(error,candidate) =>{
+        // var promise = new Promise((resolve,reject) =>{
+            App.contracts.Election.candidates(i,(error,candidate) =>{
           var id = candidate[0];
           var name = candidate[1];
           var voteCount = candidate[2];
@@ -164,7 +164,7 @@ const Web3 = require('web3');
           candidatesResults.append(candidateTemplate);  
         }) 
          
-        })}
+        }
         
       
 
@@ -175,18 +175,32 @@ const Web3 = require('web3');
     
     
   },
-castVote : function() {
+castVote : async () => {
   
    var candidateId = $('#candidatesSelect').val();
-   console.log($('#candidatesSelect').val())
-    App.contracts.Election.vote(candidateId, { from: App.account }, () => {}).then((result) =>{
+  console.log($('#candidatesSelect').val())
+  
+            App.contracts.Election.vote(candidateId,{ from: App.account },(error,candidate) =>{ })
+
+             App.contracts.Election.vote.sendTransaction(candidateId, {
+    gas: 1000000,
+    from: App.account
+  }, function(error, result) {
+    if (!error) {
+      console.log(result);
+    } else
+      console.warn(error);
+  });
+         
+   
       // Wait for votes to update
-      $("#content").hide();
+      
+         $("#content").hide();
       $("#loader").show();
-    }).catch((err) =>{
-      console.error(err);
-    });
-  }
+   
+     
+    }
+  
 }
 
 $(function() {
