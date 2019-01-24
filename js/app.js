@@ -1,4 +1,5 @@
 
+const Web3 = require('web3');
 
   App = {
   web3Provider: null,
@@ -30,7 +31,7 @@
   
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
-    const trufflecontract   = web3.eth.contract([
+    const trufflecontract   = await  web3.eth.contract([
 	{
 		"constant": false,
 		"inputs": [
@@ -115,14 +116,15 @@
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
-      App.contracts.Election.setProvider(App.web3Provider);
-    
+        // App.contracts.Election.setProvider(App.web3Provider);
+  
+      
 
       return App.render();
     // });
   },
 
-  render: function() {
+  render: async () => {
     var electionInstance;
     var loader = $("#loader");
     var content = $("#content");
@@ -139,14 +141,14 @@
     });
 
     // Load contract data
-    App.contracts.Election.deployed().then((instance) =>{
-      electionInstance = instance;
-      return electionInstance.candidatesCount();
-    }).then((candidatesCount) =>{
-      var candidatesResults = $("#candidatesResults");
+    const result =   await App.contracts.Election.candidatesCount((error,result) =>{
+     return result;
+   })
+
+          var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
 
-      for (var i = 1; i <= candidatesCount; i++) {
+      for (var i = 1; i <= result; i++) {
         electionInstance.candidates(i).then((candidate) => {
           var id = candidate[0];
           var name = candidate[1];
@@ -160,17 +162,16 @@
 
       loader.hide();
       content.show();
-    }).catch((error) =>{
-      console.warn(error);
-    });
+  
+      
+    
+    
   },
 castVote : function() {
   
    var candidateId = $('#candidatesSelect').val();
    console.log($('#candidatesSelect').val())
-    App.contracts.Election.deployed().then((instance) =>{
-       instance.vote(candidateId, { from: App.account });
-    }).then((result) =>{
+    App.contracts.Election.vote((candidateId),(error,result) =>{}).send({ from: App.account }).then((result) =>{
       // Wait for votes to update
       $("#content").hide();
       $("#loader").show();
