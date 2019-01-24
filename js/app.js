@@ -26,108 +26,103 @@
 
   initContract: async () => {
 
-    var address = '0x92F8786Ca4BC530baA35bea19bfAa8028A84693E';
+    var address = '0x9e7384bd42ad2df8b64528eb4243d3b878786eca';
   
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
     const trufflecontract   = web3.eth.contract([
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "candidatesCount",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function",
-      "signature": "0x2d35a8a2"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "candidates",
-      "outputs": [
-        {
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "voteCount",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function",
-      "signature": "0x3477ee2e"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "voters",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function",
-      "signature": "0xa3ec138d"
-    },
-    {
-      "inputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "constructor",
-      "signature": "constructor"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_candidateId",
-          "type": "uint256"
-        }
-      ],
-      "name": "vote",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x0121b93f"
-    }
-  ]);
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_candidateId",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "candidates",
+		"outputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "candidatesCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]);
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
-      // App.contracts.Election.setProvider(App.web3Provider);
+      App.contracts.Election.setProvider(App.web3Provider);
     
 
       return App.render();
     // });
   },
 
-  render: async() => {
+  render: function() {
     var electionInstance;
     var loader = $("#loader");
     var content = $("#content");
@@ -144,31 +139,30 @@
     });
 
     // Load contract data
-    try{
-         const candidatecount =   await  App.contracts.Election.candidatesCount().call()
+    App.contracts.Election.deployed().then((instance) =>{
+      electionInstance = instance;
+      return electionInstance.candidatesCount();
+    }).then((candidatesCount) =>{
+      var candidatesResults = $("#candidatesResults");
+      candidatesResults.empty();
 
-          var candidatesResults = $("#candidatesResults");
-            candidatesResults.empty();
+      for (var i = 1; i <= candidatesCount; i++) {
+        electionInstance.candidates(i).then((candidate) => {
+          var id = candidate[0];
+          var name = candidate[1];
+          var voteCount = candidate[2];
 
-            for (var i = 1; i <= candidatescount; i++) {
-              electionInstance.candidates(i).then((candidate) => {
-                var id = candidate[0];
-                var name = candidate[1];
-                var voteCount = candidate[2];
-
-                // Render candidate Result
-                var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
-                candidatesResults.append(candidateTemplate);
-              });
-            }
-
-        loader.hide();
-        content.show();
+          // Render candidate Result
+          var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+          candidatesResults.append(candidateTemplate);
+        });
       }
-      catch(error){
-        console.warn(error);
-      };
-  
+
+      loader.hide();
+      content.show();
+    }).catch((error) =>{
+      console.warn(error);
+    });
   },
 castVote : function() {
   
