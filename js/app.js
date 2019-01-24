@@ -177,20 +177,20 @@ const Web3 = require('web3');
   },
 castVote : async () => {
   
-   var candidateId = $('#candidatesSelect').val();
-  console.log($('#candidatesSelect').val())
-  
-            App.contracts.Election.vote(candidateId,{ from: App.account },(error,candidate) =>{ })
+      var candidateId = $('#candidatesSelect').val();
+      console.log($('#candidatesSelect').val())
+      
+           
 
              App.contracts.Election.vote.sendTransaction(candidateId, {
-    gas: 1000000,
-    from: App.account
-  }, function(error, result) {
-    if (!error) {
-      console.log(result);
-    } else
-      console.warn(error);
-  });
+              gas: 1000000,
+              from: App.account
+            }, function(error, result) {
+              if (!error) {
+                console.log(result);
+              } else
+                console.warn(error);
+            });
          
    
       // Wait for votes to update
