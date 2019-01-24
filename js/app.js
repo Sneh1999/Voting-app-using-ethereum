@@ -146,7 +146,7 @@
     // Load contract data
     App.contracts.Election.candidatesCount().call().then((instance) =>{
       
-      return instance.;
+      return instance;
     }).then((candidatesCount) =>{
       var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
