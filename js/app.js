@@ -165,7 +165,7 @@
         loader.hide();
         content.show();
       }
-      catch((error) =>{
+      catch(error){
         console.warn(error);
       });
   
