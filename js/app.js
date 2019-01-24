@@ -171,7 +171,7 @@ castVote : function() {
   
    var candidateId = $('#candidatesSelect').val();
    console.log($('#candidatesSelect').val())
-    App.contracts.Election.vote((candidateId),(error,result) =>{}).send({ from: App.account }).then((result) =>{
+    App.contracts.Election.vote(candidateId, { from: App.account }, () => {}).then((result) =>{
       // Wait for votes to update
       $("#content").hide();
       $("#loader").show();
