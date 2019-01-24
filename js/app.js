@@ -27,92 +27,97 @@ const Web3 = require('web3');
 
   initContract: async () => {
 
-    var address = '0x9e7384bd42ad2df8b64528eb4243d3b878786eca';
+    var address = '0xD4C581E137A69709728309FB139095F6717C603f';
   
     // $.getJSON("Election.json", (election) => {
     //   // Instantiate a new truffle contract from the artifact
-    const trufflecontract   = await  web3.eth.contract([
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_candidateId",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "candidates",
-		"outputs": [
-			{
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "voteCount",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "candidatesCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "voters",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-]);
+    const trufflecontract   = await  web3.eth.contract(([
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "candidatesCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x2d35a8a2"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "candidates",
+      "outputs": [
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "voteCount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x3477ee2e"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "voters",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0xa3ec138d"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor",
+      "signature": "constructor"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_candidateId",
+          "type": "uint256"
+        }
+      ],
+      "name": "vote",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x0121b93f"
+    }
+  ]));
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
@@ -141,24 +146,27 @@ const Web3 = require('web3');
     });
 
     // Load contract data
-    const result =   await App.contracts.Election.candidatesCount((error,result) =>{
-     return result;
-   })
+   
 
-          var candidatesResults = $("#candidatesResults");
+        var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
+      // console.log(JSON.stringify(App.contracts.Election.candidates.call((1),(error,result)=>{console.log((result))})))
 
-      for (var i = 1; i <= result; i++) {
-        electionInstance.candidates(i).then((candidate) => {
+      for (var i = 1; i <= 2; i++) {
+        var promise = new Promise((resolve,reject) =>{
+            App.contracts.Election.candidates.call(i,(error,candidate) =>{
           var id = candidate[0];
           var name = candidate[1];
           var voteCount = candidate[2];
 
           // Render candidate Result
           var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
-          candidatesResults.append(candidateTemplate);
-        });
-      }
+          candidatesResults.append(candidateTemplate);  
+        }) 
+         
+        })}
+        
+      
 
       loader.hide();
       content.show();
