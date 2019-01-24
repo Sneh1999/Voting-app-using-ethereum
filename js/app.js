@@ -167,7 +167,7 @@
       }
       catch(error){
         console.warn(error);
-      });
+      };
   
   },
 castVote : function() {
