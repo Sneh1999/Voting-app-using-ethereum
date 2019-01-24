@@ -119,8 +119,9 @@
   ]);
       
     //   // Connect provider to interact with contract
+        App.contracts.Election =  trufflecontract.at(address)
       trufflecontract.setProvider(App.web3Provider);
-      App.contracts.Election = await trufflecontract.at(address)
+    
 
       return App.render();
     // });
