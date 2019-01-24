@@ -120,7 +120,7 @@
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
-      App.contracts.Election.setProvider(App.web3Provider);
+      // App.contracts.Election.setProvider(App.web3Provider);
     
 
       return App.render();
@@ -144,9 +144,9 @@
     });
 
     // Load contract data
-    App.contracts.Election.deployed().then((instance) =>{
-      electionInstance = instance;
-      return electionInstance.candidatesCount();
+    App.contracts.Election.candidatesCount().call().then((instance) =>{
+      
+      return instance.;
     }).then((candidatesCount) =>{
       var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
