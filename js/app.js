@@ -120,7 +120,7 @@
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
-      trufflecontract.setProvider(App.web3Provider);
+      App.contracts.Election.setProvider(App.web3Provider);
     
 
       return App.render();
