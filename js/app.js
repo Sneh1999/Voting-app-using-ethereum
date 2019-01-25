@@ -6,21 +6,45 @@ const Web3 = require('web3');
   contracts: {},
   account: '0x0',
 
-  init: function() {
+  init: async () => {
+    try {
+      const accounts = await ethereum.enable()
+      // You now have an array of accounts!
+      // Currently only ever one:
+      // ['0xFDEa65C8e26263F6d9A1B5de9555D2931A33b825']
+
+    } catch (error) {
+      // Handle error. Likely the user rejected the login:
+      window.alert("User rejected provider access")
+      location.reload();
+    }
+    
     return App.initWeb3();
   },
 
   initWeb3:  () => {
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
-      App.web3Provider = web3.currentProvider;
-      web3 = new Web3(web3.currentProvider);
+      if (ethereum.networkVersion==='3'){
+        App.web3Provider = web3.currentProvider;
+        web3 = new Web3(web3.currentProvider);
+      }
+      else
+      {
+        window.alert("Please connect to Ropsten Test Network ");
+        location.reload();
+        
+      }
+     
   
     }
     else {
       // Specify default instance if no web3 instance provided
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-      web3 = new Web3(App.web3Provider);
+      // App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      // web3 = new Web3(App.web3Provider);
+      window.alert("Please log into MetaMask and connect to Ropsten Test Network ");
+      location.reload();
+
     }
     return App.initContract();
   },
@@ -121,7 +145,7 @@ const Web3 = require('web3');
       
     //   // Connect provider to interact with contract
         App.contracts.Election =  trufflecontract.at(address)
-        // App.contracts.Election.setProvider(App.web3Provider);
+        // App.contracts.Election.setProvider(web3.currentProvider);
   
       
 
@@ -150,10 +174,9 @@ const Web3 = require('web3');
 
         var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
-      // console.log(JSON.stringify(App.contracts.Election.candidates.call((1),(error,result)=>{console.log((result))})))
+      
 
       for (var i = 1; i <= 2; i++) {
-        // var promise = new Promise((resolve,reject) =>{
             App.contracts.Election.candidates(i,(error,candidate) =>{
           var id = candidate[0];
           var name = candidate[1];
@@ -178,18 +201,17 @@ const Web3 = require('web3');
 castVote : async () => {
   
       var candidateId = $('#candidatesSelect').val();
-      console.log($('#candidatesSelect').val())
-      
-           
+      console.log($('#candidatesSelect').val());
 
              App.contracts.Election.vote.sendTransaction(candidateId, {
               gas: 1000000,
               from: App.account
             }, function(error, result) {
               if (!error) {
-                console.log(result);
+                setTimeout( () => { window.alert("Please wait for the transaction to get completed"); }, 30000);
               } else
-                console.warn(error);
+                window.alert(error);
+                location.reload();
             });
          
    
@@ -205,6 +227,8 @@ castVote : async () => {
 
 $(function() {
   $(window).load(function() {
+   
     App.init();
   });
+
 });
