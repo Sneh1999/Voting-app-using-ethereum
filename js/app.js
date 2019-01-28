@@ -217,7 +217,7 @@ App = {
           setTimeout(() => {
 
             resolve("done!")
-          }, 25000)
+          }, 30000)
         });
              await promise;
         try {
