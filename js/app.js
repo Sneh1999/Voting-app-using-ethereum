@@ -226,38 +226,39 @@ App = {
       let txReceipt;
      
       
-        let promise = new Promise((resolve, reject) => {
-          setTimeout(() => {
+        
+      web3.eth.filter('latest', function (error, result) {
+        if (!error) {
+          try {
+            txReceipt = web3.eth.getTransactionReceipt(txHash, (error, txObj) => {
+              if (error) {
+                return error
+              }
+              else {
+                if (txObj.status === "0x0") {
+                  window.alert("Error was encountered.Please make sure you are not voting from same account you voted from before.")
+                  location.reload()
+                }
+                else {
+                  window.alert("Your vote got added!")
+                  location.reload();
+                }
+              }
 
-            resolve("done!")
-          }, 30000)
-        });
-             await promise;
-        try {
-          txReceipt = await web3.eth.getTransactionReceipt(txHash,(error,txObj) => {
-            if(error){
-             return error
-            }
-            else{
-              if (txObj.status==="0x0"){
-                window.alert("Error was encountered.Please make sure you are not voting from same account you voted from before.")
-               location.reload()
-              }
-              else{
-                window.alert("Your vote got added!")
-                location.reload();
-              }
-            }
-          
-            // return txObj
-          })
-          // console.log(txReceipt)
-        } catch (err) {
-             console.log("unsuccess");
+              // return txObj
+            })
+            // console.log(txReceipt)
+          } catch (err) {
+            console.log("unsuccess");
             //  console.warn(err);
-          // location.reload();
-          
+            // location.reload();
+
+          }
+        } else {
+          console.error(error)
         }
+      });
+            
       }
       
     }
