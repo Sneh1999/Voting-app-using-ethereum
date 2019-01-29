@@ -22,13 +22,26 @@ App = {
 
   initWeb3: () => {
     if (typeof web3 !== "undefined") {
+      var loader = $("#error");
+      var content = $("#content");
       // If a web3 instance is already provided by Meta Mask.
       if (ethereum.networkVersion === "3") {
         App.web3Provider = web3.currentProvider;
         web3 = new Web3(web3.currentProvider);
       } else {
-        window.alert("Please connect to Ropsten Test Network ");
-        location.reload();
+         var desiredNetwork = "3"
+          setInterval(function () {
+            web3.version.getNetwork(checkNetwork)
+          }, 1000)
+          function checkNetwork (err, currentNetwork) {
+            if (err) throw err // Please handle errors responsibly.
+            if (currentNetwork !== desiredNetwork) {
+              loader.show();
+              content.hide();
+            } else {
+              location.reload()
+            }
+      }
       }
     } else {
       // Specify default instance if no web3 instance provided
